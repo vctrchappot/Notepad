@@ -5,14 +5,14 @@
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top" Background="#F5F5F3" BorderThickness="0 0 0 1" BorderBrush="#E0DDD7">
+                <MenuItem Header="E_xit" Click="OnClick_File_Exit"/>
+                <Separator/>
                 <MenuItem Header="_File" Padding="8 4" FontWeight="Regular" FontFamily="JetBrains Mono" FontSize="12" Foreground="#1A1815">
                     <MenuItem Header="_New" Click="OnClick_File_New" InputGestureText="Ctrl+N"/>
                     <MenuItem Header="_Open" Click="OnClick_File_Open" InputGestureText="Ctrl+O"/>
                     <Separator/>
                     <MenuItem Header="_Save" Click="OnClick_File_Save_Save" InputGestureText="Ctrl+S"/>
                     <MenuItem Header="_Save As..." Click="OnClick_File_Save_SaveTo" InputGestureText="Ctrl+Shift+S"/>
-                    <Separator/>
-                    <MenuItem Header="E_xit" Click="OnClick_File_Exit"/>
                 </MenuItem>
             </Menu>
 

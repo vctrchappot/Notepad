@@ -124,11 +124,12 @@ public partial class MainWindow : Window
     private void OnClick_File_Exit(object sender, RoutedEventArgs e)
     {
         if (_hasUnsavedChanges && 
-            MessageBox.Show("Ungespeicherte Änderungen verwerfen?", "Beenden", 
+            MessageBox.Show("Ungespeicherte Änderungen verwerfen und Programm schliessen?", "Beenden", 
                 MessageBoxButton.YesNo) == MessageBoxResult.No)
         {
             return;
         }
+        
         Close();
     }
 }
