@@ -1,0 +1,39 @@
+﻿<Window x:Class="Notepad.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RapIDE" Height="480" Width="800" Background="#FAFBF9">
+    <Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Background="#F5F5F3" BorderThickness="0 0 0 1" BorderBrush="#E0DDD7">
+                <MenuItem Header="_File" Padding="8 4" FontWeight="Regular" FontFamily="JetBrains Mono" FontSize="12" Foreground="#1A1815">
+                    <MenuItem Header="_New" Click="OnClick_File_New" InputGestureText="Ctrl+N"/>
+                    <MenuItem Header="_Open" Click="OnClick_File_Open" InputGestureText="Ctrl+O"/>
+                    <Separator/>
+                    <MenuItem Header="_Save" Click="OnClick_File_Save_Save" InputGestureText="Ctrl+S"/>
+                    <MenuItem Header="_Save As..." Click="OnClick_File_Save_SaveTo" InputGestureText="Ctrl+Shift+S"/>
+                    <Separator/>
+                    <MenuItem Header="E_xit" Click="OnClick_File_Exit"/>
+                </MenuItem>
+            </Menu>
+
+            <TextBox 
+                Name="MultilineTextBox"
+                AcceptsReturn="True"
+                AcceptsTab="True"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Auto"
+                Margin="0"
+                Padding="12 10"
+                Background="#FFFFFF"
+                Foreground="#1A1815"
+                BorderBrush="#D0CCC4"
+                BorderThickness="0"
+                FontFamily="Recursive Mono Linear"
+                FontSize="14"
+                FontWeight="Normal"
+                DockPanel.Dock="Bottom"
+                SpellCheck.IsEnabled="False" />
+        </DockPanel>
+    </Grid>
+</Window>
