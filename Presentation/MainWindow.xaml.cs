@@ -105,22 +105,6 @@ public partial class MainWindow : Window
         }
     }
 
-    private void SaveToFile(string filePath)
-    {
-        try
-        {
-            File.WriteAllText(filePath, MultilineTextBox.Text);
-            _currentFilePath = filePath;
-            _hasUnsavedChanges = false;
-            UpdateTitle();
-            MessageBox.Show("Datei gespeichert!", "Erfolg", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Fehler beim Speichern: {ex.Message}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
     private void OnClick_File_Exit(object sender, RoutedEventArgs e)
     {
         if (_hasUnsavedChanges && 
