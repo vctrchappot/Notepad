@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using Dg.FileUtils;
 using Microsoft.Win32;
 
 namespace Notepad;
@@ -25,12 +26,28 @@ public partial class MainWindow : Window
 
     private void UpdateTitle()
     {
-        string fileName = string.IsNullOrEmpty(_currentFilePath)
+        var fileName = string.IsNullOrEmpty(_currentFilePath)
             ? "Unbenannt"
             : Path.GetFileName(_currentFilePath);
 
-        string unsaved = _hasUnsavedChanges ? " *" : "";
+        var unsaved = _hasUnsavedChanges ? " *" : "";
         Title = $"Notepad - {fileName}{unsaved}";
+    }
+    
+    private void SaveToFile(string filePath, string content)
+    {
+        try
+        {
+            FileUtils.SaveToFile(filePath, content);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"Fehler beim Speichern: {ex.Message}",
+                "Fehler",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
     }
 
     private void OnClick_File_New(object sender, RoutedEventArgs e)
@@ -63,7 +80,7 @@ public partial class MainWindow : Window
         {
             try
             {
-                string content = File.ReadAllText(dialog.FileName);
+                var content = File.ReadAllText(dialog.FileName);
                 MultilineTextBox.Text = content;
                 _currentFilePath = dialog.FileName;
                 _hasUnsavedChanges = false;
@@ -76,18 +93,19 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnClick_File_Save_Save(object sender, RoutedEventArgs e)
+    private void OnClick_File_Save(object sender, RoutedEventArgs e)
     {
         if (string.IsNullOrEmpty(_currentFilePath))
         {
-            OnClick_File_Save_SaveTo(sender, e);
+            OnClick_File_SaveTo(sender, e);
             return;
         }
 
-        SaveToFile(_currentFilePath);
+        var content = MultilineTextBox.Text;
+        FileUtils.SaveToFile(_currentFilePath, content);
     }
 
-    private void OnClick_File_Save_SaveTo(object sender, RoutedEventArgs e)
+    private void OnClick_File_SaveTo(object sender, RoutedEventArgs e)
     {
         var dialog = new SaveFileDialog
         {
@@ -101,7 +119,9 @@ public partial class MainWindow : Window
 
         if (dialog.ShowDialog() == true)
         {
-            SaveToFile(dialog.FileName);
+            var content = MultilineTextBox.Text;
+            
+            FileUtils.SaveToFile(dialog.FileName, content);
         }
     }
 
