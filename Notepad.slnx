@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="Notepad/Notepad.csproj" />
+  <Project Path="Dg.FileUtils/Dg.FileUtils.csproj" />
+  <Project Path="Presentation/Presentation.csproj" />
 </Solution>
