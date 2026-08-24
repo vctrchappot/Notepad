@@ -8,8 +8,8 @@ namespace Notepad;
 
 public partial class MainWindow : Window
 {
-    private string? _currentFilePath;
-    private bool _hasUnsavedChanges = false;
+    private string? currentFilePath;
+    private bool hasUnsavedChanges = false;
 
     public MainWindow()
     {
@@ -20,39 +20,24 @@ public partial class MainWindow : Window
 
     private void OnTextChanged()
     {
-        _hasUnsavedChanges = true;
+        hasUnsavedChanges = true;
         UpdateTitle();
     }
 
     private void UpdateTitle()
     {
-        var fileName = string.IsNullOrEmpty(_currentFilePath)
+        var fileName = string.IsNullOrEmpty(currentFilePath)
             ? "Unbenannt"
-            : Path.GetFileName(_currentFilePath);
+            : Path.GetFileName(currentFilePath);
 
-        var unsaved = _hasUnsavedChanges ? " *" : "";
+        var unsaved = hasUnsavedChanges ? " *" : "";
+
         Title = $"Notepad - {fileName}{unsaved}";
     }
     
-    private void SaveToFile(string filePath, string content)
-    {
-        try
-        {
-            FileUtils.SaveToFile(filePath, content);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(
-                $"Fehler beim Speichern: {ex.Message}",
-                "Fehler",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
-    }
-
     private void OnClick_File_New(object sender, RoutedEventArgs e)
     {
-        if (_hasUnsavedChanges &&
+        if (hasUnsavedChanges &&
             MessageBox.Show(
                 "Änderungen verwerfen?",
                 "Neue Datei",
@@ -62,8 +47,8 @@ public partial class MainWindow : Window
         }
 
         MultilineTextBox.Clear();
-        _currentFilePath = null;
-        _hasUnsavedChanges = false;
+        currentFilePath = null;
+        hasUnsavedChanges = false;
         UpdateTitle();
     }
 
@@ -76,33 +61,31 @@ public partial class MainWindow : Window
             Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
         };
 
-        if (dialog.ShowDialog() == true)
+        if (dialog.ShowDialog() != true) return;
+        try
         {
-            try
-            {
-                var content = File.ReadAllText(dialog.FileName);
-                MultilineTextBox.Text = content;
-                _currentFilePath = dialog.FileName;
-                _hasUnsavedChanges = false;
-                UpdateTitle();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Fehler beim Öffnen: {ex.Message}", "Fehler");
-            }
+            var content = File.ReadAllText(dialog.FileName);
+            MultilineTextBox.Text = content;
+            currentFilePath = dialog.FileName;
+            hasUnsavedChanges = false;
+            UpdateTitle();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Fehler beim Öffnen: {ex.Message}", "Fehler");
         }
     }
 
     private void OnClick_File_Save(object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrEmpty(_currentFilePath))
+        if (string.IsNullOrEmpty(currentFilePath))
         {
             OnClick_File_SaveTo(sender, e);
             return;
         }
 
         var content = MultilineTextBox.Text;
-        FileUtils.SaveToFile(_currentFilePath, content);
+        FileUtils.SaveToFile(currentFilePath, content);
     }
 
     private void OnClick_File_SaveTo(object sender, RoutedEventArgs e)
@@ -117,17 +100,15 @@ public partial class MainWindow : Window
             AddExtension = true
         };
 
-        if (dialog.ShowDialog() == true)
-        {
-            var content = MultilineTextBox.Text;
+        if (dialog.ShowDialog() != true) return;
+        var content = MultilineTextBox.Text;
             
-            FileUtils.SaveToFile(dialog.FileName, content);
-        }
+        FileUtils.SaveToFile(dialog.FileName, content);
     }
 
     private void OnClick_File_Exit(object sender, RoutedEventArgs e)
     {
-        if (_hasUnsavedChanges && 
+        if (hasUnsavedChanges && 
             MessageBox.Show("Ungespeicherte Änderungen verwerfen und Programm schliessen?", "Beenden", 
                 MessageBoxButton.YesNo) == MessageBoxResult.No)
         {

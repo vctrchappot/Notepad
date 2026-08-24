@@ -16,8 +16,7 @@
                 </MenuItem>
             </Menu>
 
-            <TextBox 
-                Name="MultilineTextBox"
+            <TextBox Name="MultilineTextBox"
                 AcceptsReturn="True"
                 AcceptsTab="True"
                 TextWrapping="Wrap"
